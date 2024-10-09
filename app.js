@@ -15,6 +15,7 @@ const html = `
   <head>
     <title>Hello from Render!</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript">
     <script>
       setTimeout(() => {
         confetti({
@@ -24,6 +25,22 @@ const html = `
           disableForReducedMotion: true
         });
       }, 500);
+      function onScanSuccess(decodedText, decodedResult) {
+      // handle the scanned code as you like, for example:
+        console.log(`Code matched = ${decodedText}`, decodedResult);
+      }
+
+      function onScanFailure(error) {
+      // handle scan failure, usually better to ignore and keep scanning.
+      // for example:
+        console.warn(`Code scan error = ${error}`);
+      }
+
+      let html5QrcodeScanner = new Html5QrcodeScanner(
+        "reader",
+        { fps: 10, qrbox: {width: 250, height: 250} },
+        /* verbose= */ false);
+        html5QrcodeScanner.render(onScanSuccess, onScanFailure);
     </script>
     <style>
       @import url("https://p.typekit.net/p.css?s=1&k=vnd5zic&ht=tk&f=39475.39476.39477.39478.39479.39480.39481.39482&a=18673890&app=typekit&e=css");
@@ -55,6 +72,7 @@ const html = `
   <body>
     <section>
       Hello from Render!
+      <div id="reader" width="600px"></div>
     </section>
   </body>
 </html>
